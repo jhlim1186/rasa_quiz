@@ -1,0 +1,85 @@
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- greet
+- goodbye
+- thanks
+- deny
+- joke
+- name
+- subject
+- test
+- start
+- answer
+- reject
+entities:
+- name
+- subject
+- answer
+slots:
+  answer:
+    type: unfeaturized
+  name:
+    type: unfeaturized
+  subject:
+    type: unfeaturized
+responses:
+  utter_first:
+  - text: 퀴즈봇에 오신것을 환영합니다. 반가운 마음으로 인사드려요 반갑습니다 ㅎㅎ
+  utter_name:
+  - text: 안녕하세요. 이름을 정자로 적어주세요
+  utter_greet:
+  - text: '{name}님 반갑습니다.'
+  utter_goodbye:
+  - text: 다음에 또 얘기해요~!
+  utter_thanks:
+  - text: 감사합니다^^
+  utter_quit:
+  - text: 아쉽네요 ㅜㅜ 다음에 같이해요
+  utter_ready:
+  - buttons:
+    - payload: /start
+      title: 시작하자
+    - payload: utter_quit
+      title: 아니 안할래
+    text: 퀴즈를 시작할까요?
+  utter_fallback:
+  - text: 무슨 뜻인지 모르겠어요...ㅠㅠ
+  utter_select_subject:
+  - buttons:
+    - payload: /subject{"subject":"사자성어"}
+      title: 사자성어
+    - payload: /subject{"subject":"넌센스"}
+      title: 넌센스
+    - payload: /subject{"subject":"수도"}
+      title: 수도
+    text: 어떤의 과목의 시험을 보고 싶으세요?
+  utter_start:
+  - text: 좋아요 그럼 시작할까요? ㅎㅎ
+  - text: 자 그럼 파이팅!
+  - text: 출발!
+  - text: 시작!
+  - text: 좋아요 이제부터 시작할게요 ㅎㅎ
+  - text: 시험 잘보시길 빌게요!
+  - text: 출발출발!
+actions:
+- utter_first
+- utter_quit
+- utter_name
+- utter_thanks
+- utter_greet
+- utter_goodbye
+- utter_fallback
+- utter_select_subject
+- utter_start
+- utter_ready
+- Action_Quiz
+- Action_start
+- Action_problem
+- Action_warning
+- Action_wrong
+- Action_search_score
+forms:
+- Action_name
+- Action_answer
