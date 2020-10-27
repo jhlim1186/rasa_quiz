@@ -5,7 +5,7 @@ import random as rd
 ## quiz_num : index 번호를 list 형태로 출력
 def GetQuiz(quiz):
     problem_total_num = range(0,len(quiz.index))
-    quiz_num = rd.sample(problem_total_num,1)
+    quiz_num = rd.sample(problem_total_num,2)
     
     return quiz_num
 
@@ -26,3 +26,15 @@ def db_name():
     name_list = np.array(df_name[0].tolist())
 
     return name_list
+
+def GetScore(name,score):
+    result_df = pd.read_csv('score.csv', encoding = 'utf-8',index_col=0)
+    new_score = {'이름':name,'점수':score}
+    result_df = result_df.append(new_score, ignore_index=True)
+    
+    result_df = result_df.sort_values(by=['점수'], axis=0, ascending=False)
+    result_df.to_csv("score.csv", mode='w')
+    
+    result_df = result_df.values.tolist()
+    
+    return result_df
