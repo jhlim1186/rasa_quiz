@@ -6,26 +6,6 @@ from rasa_sdk.forms import FormAction
 
 import quiz
 import pandas as pd
-import sql
-import fuzzywuzzy
-
-class ActionSearchScore(Action):
-
-    def name(self) -> Text:
-        return "Action_search_score"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        result = sql.search_score()
-        dispatcher.utter_message(str(result[0][2]) + "위" + " " + result[0][0] + " " +str(result[0][1]) + "점\n" +
-                                str(result[1][2]) + "위" + " " + result[1][0] + " " +str(result[1][1]) + "점\n" +
-                                str(result[2][2]) + "위" + " " + result[2][0] + " " +str(result[2][1]) + "점\n" + 
-                                str(result[3][2]) + "위" + " " + result[3][0] + " " +str(result[3][1]) + "점\n" + 
-                                str(result[4][2]) + "위" + " " + result[4][0] + " " +str(result[4][1]) + "점")
-
-        return []
 
 class ActionHelloWorld(Action):
 
@@ -58,9 +38,14 @@ class Actionfindname(FormAction):
 
         global score
         name_entity = tracker.get_slot("name")
-        sql.attatch_score(name_entity,score)
+        result = quiz.GetScore(name_entity,score)
+        dispatcher.utter_message("1위" + " " + result[0][0] + " " +str(result[0][1]) + "점\n" +
+                                "2위" + " " + result[1][0] + " " +str(result[1][1]) + "점\n" +
+                                "3위" + " " + result[2][0] + " " +str(result[2][1]) + "점\n" + 
+                                "4위" + " " + result[3][0] + " " +str(result[3][1]) + "점\n" + 
+                                "5위" + " " + result[4][0] + " " +str(result[4][1]) + "점")
         
-        return [FollowupAction("Action_search_score")]
+        return []
 
 class ActionQuiz(Action):
     
@@ -127,7 +112,7 @@ class ActionAnswer(FormAction):
 
         if(answer == answer_entity):
             dispatcher.utter_message("정답입니다. 축하드려요!")
-            score =+ 10
+            score = score + 10
 
         else:
             dispatcher.utter_message("틀렸습니다.\n 문제의 정답은 {}입니다. 다음에 더 잘해봐요!".format(answer))
